@@ -556,7 +556,7 @@ class Requests {
 
 		if ((in_array($return->status_code, array(300, 301, 302, 303, 307)) || $return->status_code > 307 && $return->status_code < 400) && $options['follow_redirects'] === true) {
 			if (isset($return->headers['location']) && $options['redirected'] < $options['redirects']) {
-				if (($options['switch_method'] === true && $return->status_code != 307) || $return->status_code === 303) {
+				if (($options['switch_method'] === true && $return->status_code !== 307) || $return->status_code === 303) {
 					$options['type'] = Requests::GET;
 					$req_data = array();
 				}
