@@ -548,6 +548,8 @@ class Requests {
 			unset($return->headers['connection']);
 		}
 
+		$return->throw_for_status($options['follow_redirects']);
+
 		if ((in_array($return->status_code, array(300, 301, 302, 303, 307)) || $return->status_code > 307 && $return->status_code < 400) && $options['follow_redirects'] === true) {
 			if (isset($return->headers['location']) && $options['redirected'] < $options['redirects']) {
 				if ($return->status_code === 303) {
