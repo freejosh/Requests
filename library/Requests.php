@@ -273,6 +273,9 @@ class Requests {
 	 *    transport object. Defaults to the first working transport from
 	 *    {@see getTransport()}
 	 *    (string|Requests_Transport, default: {@see getTransport()})
+	 * - `switch_method`: Forces all 3xx requests (except 307) to switch from
+	 *    POST to GET, like browsers do.
+	 *    (boolean, default: false)
 	 *
 	 * @throws Requests_Exception On invalid URLs (`nonhttp`)
 	 *
@@ -444,6 +447,7 @@ class Requests {
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
+			'switch_method' => false
 		);
 		if ($multirequest !== false) {
 			$defaults['complete'] = null;
@@ -552,8 +556,9 @@ class Requests {
 
 		if ((in_array($return->status_code, array(300, 301, 302, 303, 307)) || $return->status_code > 307 && $return->status_code < 400) && $options['follow_redirects'] === true) {
 			if (isset($return->headers['location']) && $options['redirected'] < $options['redirects']) {
-				if ($return->status_code === 303) {
+				if (($options['switch_method'] === true && $return->status_code != 307) || $return->status_code === 303) {
 					$options['type'] = Requests::GET;
+					$req_data = array();
 				}
 				$options['redirected']++;
 				$location = $return->headers['location'];
