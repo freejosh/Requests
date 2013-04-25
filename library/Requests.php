@@ -447,6 +447,8 @@ class Requests {
 			'idn' => true,
 			'hooks' => null,
 			'transport' => null,
+			'cookiejar' => false,
+			'cookiefile' => false,
 			'switch_method' => false
 		);
 		if ($multirequest !== false) {
