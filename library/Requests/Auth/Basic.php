@@ -54,7 +54,7 @@ class Requests_Auth_Basic implements Requests_Auth {
 	 * @param Requests_Hooks $hooks Hook system
 	 */
 	public function register(Requests_Hooks &$hooks) {
-		$hooks->register('curl.before_send', array(&$this, 'curl_before_send'));
+		$hooks->register('curl.before_request', array(&$this, 'curl_before_request'));
 		$hooks->register('fsockopen.after_headers', array(&$this, 'fsockopen_header'));
 	}
 
@@ -63,7 +63,7 @@ class Requests_Auth_Basic implements Requests_Auth {
 	 *
 	 * @param resource $handle cURL resource
 	 */
-	public function curl_before_send(&$handle) {
+	public function curl_before_request(&$handle) {
 		curl_setopt($handle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 		curl_setopt($handle, CURLOPT_USERPWD, $this->getAuthString());
 	}
